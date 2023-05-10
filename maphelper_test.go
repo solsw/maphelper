@@ -90,3 +90,26 @@ func TestTuples(t *testing.T) {
 		})
 	}
 }
+
+func TestNewFromTuples(t *testing.T) {
+	type args struct {
+		tt []generichelper.Tuple2[int, string]
+	}
+	tests := []struct {
+		name string
+		args args
+		want map[int]string
+	}{
+		{name: "1",
+			args: args{tt: []generichelper.Tuple2[int, string]{{1, "one"}, {2, "two"}, {3, "three"}}},
+			want: getm1(),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewFromTuples(tt.args.tt); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewFromTuples() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
