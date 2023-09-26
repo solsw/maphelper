@@ -30,8 +30,8 @@ func Elements[K comparable, E any](m map[K]E) []E {
 	return ee
 }
 
-// Tuples returns a slice containing the key/element pairs from 'm'.
-// If 'm' is nil, nil is returned.
+// Tuples returns a slice containing the key/element pairs
+// (in the form of [generichelper.Tuple2]) from 'm'. If 'm' is nil, nil is returned.
 func Tuples[K comparable, E any](m map[K]E) []generichelper.Tuple2[K, E] {
 	if m == nil {
 		return nil
@@ -43,8 +43,8 @@ func Tuples[K comparable, E any](m map[K]E) []generichelper.Tuple2[K, E] {
 	return tt
 }
 
-// NewFromTuples creates a map from the slice of key/element pairs.
-// If 'tt' is nil, nil is returned.
+// NewFromTuples creates a map from the slice of key/element pairs
+// (in the form of [generichelper.Tuple2]). If 'tt' is nil, nil is returned.
 func NewFromTuples[K comparable, E any](tt []generichelper.Tuple2[K, E]) map[K]E {
 	if tt == nil {
 		return nil
