@@ -4,34 +4,9 @@ import (
 	"github.com/solsw/generichelper"
 )
 
-// Keys returns a slice containing the keys from 'm'.
-// If 'm' is nil, nil is returned.
-func Keys[K comparable, E any](m map[K]E) []K {
-	if m == nil {
-		return nil
-	}
-	kk := make([]K, 0, len(m))
-	for k := range m {
-		kk = append(kk, k)
-	}
-	return kk
-}
-
-// Elements returns a slice containing the elements from 'm'.
-// If 'm' is nil, nil is returned.
-func Elements[K comparable, E any](m map[K]E) []E {
-	if m == nil {
-		return nil
-	}
-	ee := make([]E, 0, len(m))
-	for _, e := range m {
-		ee = append(ee, e)
-	}
-	return ee
-}
-
 // Tuples returns a slice containing the key/element pairs
-// (in the form of [generichelper.Tuple2]) from 'm'. If 'm' is nil, nil is returned.
+// (in the form of [generichelper.Tuple2]) from 'm'.
+// If 'm' is nil, nil is returned.
 func Tuples[K comparable, E any](m map[K]E) []generichelper.Tuple2[K, E] {
 	if m == nil {
 		return nil
@@ -44,7 +19,9 @@ func Tuples[K comparable, E any](m map[K]E) []generichelper.Tuple2[K, E] {
 }
 
 // NewFromTuples creates a map from the slice of key/element pairs
-// (in the form of [generichelper.Tuple2]). If 'tt' is nil, nil is returned.
+// (in the form of [generichelper.Tuple2]).
+// If 'tt' contains tuples with duplicate keys, the last one wins.
+// If 'tt' is nil, nil is returned.
 func NewFromTuples[K comparable, E any](tt []generichelper.Tuple2[K, E]) map[K]E {
 	if tt == nil {
 		return nil

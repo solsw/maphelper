@@ -16,56 +16,6 @@ func getm1() map[int]string {
 	return m1
 }
 
-func TestKeys(t *testing.T) {
-	type args struct {
-		m map[int]string
-	}
-	tests := []struct {
-		name string
-		args args
-		want []int
-	}{
-		{name: "1",
-			args: args{m: getm1()},
-			want: []int{1, 2, 3},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := Keys(tt.args.m)
-			sort.Ints(got)
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Keys() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestElements(t *testing.T) {
-	type args struct {
-		m map[int]string
-	}
-	tests := []struct {
-		name string
-		args args
-		want []string
-	}{
-		{name: "1",
-			args: args{m: getm1()},
-			want: []string{"one", "three", "two"},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := Elements(tt.args.m)
-			sort.Strings(got)
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Elements() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestTuples(t *testing.T) {
 	type args struct {
 		m map[int]string
@@ -75,9 +25,13 @@ func TestTuples(t *testing.T) {
 		args args
 		want []generichelper.Tuple2[int, string]
 	}{
+		{name: "nil",
+			args: args{m: nil},
+			want: nil,
+		},
 		{name: "1",
 			args: args{m: getm1()},
-			want: []generichelper.Tuple2[int, string]{{1, "one"}, {2, "two"}, {3, "three"}},
+			want: []generichelper.Tuple2[int, string]{{Item1: 1, Item2: "one"}, {Item1: 2, Item2: "two"}, {Item1: 3, Item2: "three"}},
 		},
 	}
 	for _, tt := range tests {
@@ -100,8 +54,12 @@ func TestNewFromTuples(t *testing.T) {
 		args args
 		want map[int]string
 	}{
+		{name: "nil",
+			args: args{tt: nil},
+			want: nil,
+		},
 		{name: "1",
-			args: args{tt: []generichelper.Tuple2[int, string]{{1, "one"}, {2, "two"}, {3, "three"}}},
+			args: args{tt: []generichelper.Tuple2[int, string]{{Item1: 1, Item2: "one"}, {Item1: 2, Item2: "two"}, {Item1: 3, Item2: "three"}}},
 			want: getm1(),
 		},
 	}
@@ -111,5 +69,12 @@ func TestNewFromTuples(t *testing.T) {
 				t.Errorf("NewFromTuples() = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestTuplesRoundTrip(t *testing.T) {
+	m := getm1()
+	if got := NewFromTuples(Tuples(m)); !reflect.DeepEqual(got, m) {
+		t.Errorf("NewFromTuples(Tuples(m)) = %v, want %v", got, m)
 	}
 }
